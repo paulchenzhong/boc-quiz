@@ -5,6 +5,8 @@ import com.boc.entities.DateRange;
 import com.boc.repositories.ClimateRepository;
 import com.boc.services.ClimateService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,14 +42,16 @@ public class ClimateController {
     
     // display list of employees
  	@GetMapping("/")
- 	public String viewHomePage(Model model, String keyword) {
+ 	public String viewHomePage(Model model, String keyword,String from_date, String to_date ) throws ParseException {
  		
- 		System.out.println("****************"+keyword);
- 		if (keyword == null) {
- 			return findPaginated(1, "stationName", "asc", model);
+ 		if (from_date != null || to_date != null) {
+ 			return findPaginated(1, "stationName", "asc", model, from_date, to_date);
+ 		}
+ 		else if (keyword != null) {
+ 			return findPaginated(1, "stationName", "asc", model, keyword);
  		}
  		else {
- 			return findPaginated(1, "stationName", "asc", model, keyword);
+ 			return findPaginated(1, "stationName", "asc", model);
  		}
  				
  	}
@@ -120,39 +124,88 @@ public class ClimateController {
 		return "index";
 	}
     
+    @GetMapping("/page/{pageNo}/{from_date}-{to_date}")
+	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+			@RequestParam("sortField") String sortField,
+			@RequestParam("sortDir") String sortDir,
+			Model model,
+			String from_date,
+			String to_date) throws ParseException {
+    	
+		int pageSize = 8;
+		Page<Climate> page;
+
+		page = climateService.findPaginated(pageNo, pageSize, sortField, sortDir);
+
+		
+		List<Climate> listClimates = page.getContent();
+		
+		// filter out the date range
+		List<Climate> result = new ArrayList<Climate>();
+		
+		//date format
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		
+        for (Climate climate:listClimates) {
+    		if (from_date!="" && to_date!="") {
+    			Date startDate = sdf.parse(from_date);
+        		Date endDate = sdf.parse(to_date);
+    			if (climate.getDate().after(startDate) && climate.getDate().before(endDate)) {
+        			result.add(climate);
+        		}
+    		}
+    		else if (from_date!="" && to_date=="") {
+    			Date startDate = sdf.parse(from_date);
+    			if (climate.getDate().after(startDate)) {
+        			result.add(climate);
+        		}
+    		}
+    		else if (from_date=="" && to_date!="") {
+    			Date endDate = sdf.parse(to_date);
+    			if (climate.getDate().before(endDate)) {
+        			result.add(climate);
+        		}
+    		}
+        }
+
+		System.out.println("Total pages: "+page.getTotalPages());
+
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("totalItems", page.getTotalElements());
+		
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+		
+		model.addAttribute("listClimates", result);
+		return "index";
+	}
+    
     @GetMapping("/page/{pageNo}/{keyword}")
 	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
 			@RequestParam("sortField") String sortField,
 			@RequestParam("sortDir") String sortDir,
 			Model model,
-			String keyword) {
+			String keyword) throws ParseException {
+    	
 		int pageSize = 8;
-		Page<Climate> page;
+		Page<Climate> page;		
 		
-		if (keyword != null) {
-			page = climateService.findPaginated(pageNo, pageSize, sortField, sortDir, keyword);
-		}
-		else {
-			page = climateService.findPaginated(pageNo, pageSize, sortField, sortDir);
-		}
+		page = climateService.findPaginated(pageNo, pageSize, sortField, sortDir);
+
 		
 		List<Climate> listClimates = page.getContent();
 		
-		// filter out the date range
-		List<Climate> result = new ArrayList();
+		// filtering
+		List<Climate> result = new ArrayList<Climate>();
 		
-		
-		DateRange dateRange = new DateRange();
-        dateRange.setDateFrom(new Date());
-        dateRange.setDateTo(new Date());
-        model.addAttribute("dateRange", dateRange);
-        
-        for (Climate climate:listClimates) {
-        	if (climate.getStationName() == "CHEMAINUS") {
+		for (Climate climate:listClimates) {
+        	if (climate.getStationName().contains(keyword)) {
         		result.add(climate);
         	}
         }
-        
+
 		System.out.println("Total pages: "+page.getTotalPages());
 
 		model.addAttribute("currentPage", pageNo);

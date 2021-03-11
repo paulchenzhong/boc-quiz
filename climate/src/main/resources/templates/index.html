@@ -19,19 +19,33 @@
 
 <div class="container my-2">
     <h1>Climate Data</h1>
+	
+	<form th:action="@{/}">
+		<div class="form-group row col-sm-4">
+		    Station Name: <input type="text" name="keyword" id="keyword" size="40" th:value="${keyword}" required />
+		</div>
+		<div class="form-group row col-sm-4">
+		     <!--<input type="submit" value="Search on Station Name" /> -->
+		    <button class="btn btn-primary " name="submit" type="submit">Search on Station Name</button>
+		    &nbsp;&nbsp;
+		    <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+		</div>
+	</form>
 
 	<!-- Form code begins -->
-    <form th:action="@{/}" method="get">
+    <form th:action="@{/}">
       <div class="form-group row col-sm-4"> <!-- Date input -->
-        <label class="control-label" for="from_date">From Date</label>
-        <input class="form-control" id="from_date" name="from_date" placeholder="MM/DD/YYY" type="text"/>
+        <label class="control-label" for="from_date">Start Date</label>
+        <input class="form-control" id="from_date" name="from_date" th:value="${from_date}" placeholder="MM/DD/YYY" type="text"/>
       </div>
       <div class="form-group row col-sm-4"> <!-- Date input -->
-        <label class="control-label" for="to_date">To Date</label>
-        <input class="form-control" id="to_date" name="to_date" placeholder="MM/DD/YYY" type="text"/>
+        <label class="control-label" for="to_date">End Date</label>
+        <input class="form-control" id="to_date" name="to_date" th:value="${to_date}" placeholder="MM/DD/YYY" type="text"/>
       </div>
       <div class="form-group"> <!-- Submit button -->
-        <button class="btn btn-primary " name="submit" type="submit">Search</button>
+        <button class="btn btn-primary " name="submit" type="submit">Search on Date Range</button>
+        &nbsp;&nbsp;
+		    <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
       </div>
      </form>
      <!-- Form code ends --> 
@@ -75,7 +89,7 @@
             <td th:text="${climate.id}"></td>
             <td th:text="${climate.stationName}"></td>
             <td th:text="${climate.province}"></td>
-            <td th:text="${#calendars.format(climate.date, 'yyyy-MM-dd')}"></td>
+             <td th:text="${#calendars.format(climate.date, 'MM/DD/YYY')}"></td>
             <td th:text="${climate.meanTemp}"></td>
             <td th:text="${climate.highestMonthlyMaxTemp}"></td>
             <td th:text="${climate.lowestMonthlyMaxTemp}"></td>
@@ -100,7 +114,7 @@
 					</span>
             </div> -->
             <div class = "col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage-1 }+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage-1 }+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
                 <span th:unless="${currentPage < totalPages}">Previous</span>
             </div>
            
@@ -115,6 +129,10 @@
             </div>
         </div>
     </div>
+
+<div class="form-group col-md-8">
+                            <a class="btn btn-primary" href="/" role="button">Back</a>
+                        </div>
 </div>
 
 

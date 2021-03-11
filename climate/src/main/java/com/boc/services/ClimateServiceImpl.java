@@ -47,7 +47,6 @@ public class ClimateServiceImpl implements ClimateService {
 			Sort.by(sortField).descending();
 		
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-		System.out.println("No keyword found");
 		
 		return this.climateRepository.findAll(pageable);
 	}
@@ -57,7 +56,7 @@ public class ClimateServiceImpl implements ClimateService {
 	public Page<Climate> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection, String keyword) {
 		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
 			Sort.by(sortField).descending();
-		System.out.println("Keyword found");
+		
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
 		
 		Page<Climate> climateList= climateRepository.findAll(pageable);
