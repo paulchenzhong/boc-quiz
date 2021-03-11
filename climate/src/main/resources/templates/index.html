@@ -75,7 +75,7 @@
             <td th:text="${climate.id}"></td>
             <td th:text="${climate.stationName}"></td>
             <td th:text="${climate.province}"></td>
-            <td th:text="${climate.date}"></td>
+            <td th:text="${#calendars.format(climate.date, 'yyy-MM-dd')}"></td>
             <td th:text="${climate.meanTemp}"></td>
             <td th:text="${climate.highestMonthlyMaxTemp}"></td>
             <td th:text="${climate.lowestMonthlyMaxTemp}"></td>
