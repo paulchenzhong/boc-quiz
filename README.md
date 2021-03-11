@@ -1,4 +1,9 @@
 ### Features
+A web page displays the historic weather-related information.
+1. You can search on Date range or station name. Table is sortable.
+2. Click on "View" to get the detail information.
+
+### Tech stack
 - Java 8
 - Springboot 2.2.0.M2
 - Thymeleaf 3.0
