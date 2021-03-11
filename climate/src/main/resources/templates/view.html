@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Update User</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container my-5">
+    <h3> Climate Record Detail</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-8">
+                <form action="#" th:action="@{/view/{id}(id=${id})}" th:object="${climate}" method="post">
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <label for="id" class="col-form-label">ID</label>
+							<input type="text" th:field="*{id}" class="form-control" id="id" placeholder="id">
+							<span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="stationName" class="col-form-label">Station Name</label>
+							<input type="text" th:field="*{stationName}" class="form-control" id="stationName" placeholder="stationName">
+							<span th:if="${#fields.hasErrors('stationName')}" th:errors="*{stationName}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="province" class="col-form-label">Province</label>
+                            <input type="text" th:field="*{province}" class="form-control" id="province" placeholder="Province">
+                            <span th:if="${#fields.hasErrors('province')}" th:errors="*{province}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="date" class="col-form-label">Date</label>
+                            <input type="text" th:field="*{date}" class="form-control" id="date" placeholder="date">
+                            <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="meanTemp" class="col-form-label">meanTemp</label>
+                            <input type="text" th:field="*{meanTemp}" class="form-control" id="meanTemp" placeholder="meanTemp">
+                            <span th:if="${#fields.hasErrors('meanTemp')}" th:errors="*{meanTemp}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="highestMonthlyMaxTemp" class="col-form-label">Highest Monthly Max Temp</label>
+                            <input type="text" th:field="*{highestMonthlyMaxTemp}" class="form-control" id="highestMonthlyMaxTemp" placeholder="highestMonthlyMaxTemp">
+                            <span th:if="${#fields.hasErrors('highestMonthlyMaxTemp')}" th:errors="*{highestMonthlyMaxTemp}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="lowestMonthlyMaxTemp" class="col-form-label">lowest Monthly MinTemp</label>
+                            <input type="text" th:field="*{lowestMonthlyMaxTemp}" class="form-control" id="lowestMonthlyMaxTemp" placeholder="lowestMonthlyMaxTemp">
+                            <span th:if="${#fields.hasErrors('lowestMonthlyMaxTemp')}" th:errors="*{lowestMonthlyMaxTemp}" class="text-danger"></span>
+                        </div>
+                       
+                        <div class="form-group col-md-8">
+                            <a class="btn btn-primary" href="/" role="button">Back</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
