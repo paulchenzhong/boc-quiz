@@ -11,3 +11,6 @@ mvn clean install
 
 ### How to run Quiz Application from command line
 mvn spring-boot:run -Dspring-boot.run.profiles=localhost -DskipTests
+
+### Open the following URL from browser
+http://localhost:8080
