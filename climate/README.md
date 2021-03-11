@@ -1,4 +1,4 @@
-### Features
+### Tech stack
 - Java 8
 - Springboot 2.2.0.M2
 - Thymeleaf 3.0
