@@ -6,5 +6,8 @@
 - JQuery 3.3.1
 - H2﻿
 
-### How to run Quiz Application
+### How to build Quiz Application
+mvn clean install
+
+### How to run Quiz Application from command line
 mvn spring-boot:run -Dspring-boot.run.profiles=localhost -DskipTests
